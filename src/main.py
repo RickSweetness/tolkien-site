@@ -1,8 +1,49 @@
 from textnode import TextNode, TextType
 
+def copy_and_paste_directory(source, destination):
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def main():
-    text_node = TextNode("this is some anchor text", TextType.LINK, "website.com")
-    print(text_node)
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
     main()

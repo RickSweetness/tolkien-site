@@ -1,6 +1,6 @@
 from enum import Enum
 
-from leafnode import LeafNode
+from htmlnode import LeafNode
 
 class TextType(Enum):
     TEXT = "text"
@@ -51,4 +51,4 @@ def text_node_to_html_node(text_node):
                 "alt": text_node.text
             })
 
-    raise Exception("Not a supported Text Node type")
+    raise ValueError(f"Not a supported Text Node type: {text_node.text_type}")
