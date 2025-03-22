@@ -390,7 +390,7 @@ paragraph
         html = markdown_to_html_node(text).to_html()
         self.assertEqual(
             html,
-            """<div><h1># header</h1><p>hello I'm a paragraph</p><blockquote>>this is a quote</blockquote><pre><code>this is a code block yay code</code></pre><ol><li>1. organized list</li><li>2. awesome list</li></ol><ul><li>- unorganized list</li><li>- really good stuff</li></ul></div>"""
+            """<div><h1>header</h1><p>hello I'm a paragraph</p><blockquote>this is a quote</blockquote><pre><code>this is a code block yay code</code></pre><ol><li>organized list</li><li>awesome list</li></ol><ul><li>unorganized list</li><li>really good stuff</li></ul></div>"""
         )
 
     def test_paragraphs(self):

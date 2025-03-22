@@ -56,21 +56,28 @@ def markdown_to_html_node(text):
         block_type = block_to_block_type(block)
         #HEADING
         if block_type == BlockType.HEADING:
+            level = 0
+            for char in block:
+                if char == "#":
+                    level += 1
+                else:
+                    break
+            if level + 1 >= len(block):
+                raise ValueError(f"invalid heading level: {level}")            
             block = block.replace("\n", " ")
-            if len(text_to_children(block)) ==  1:
-                super_children.append(LeafNode(heading_node_number(block), block))
-                continue
-            super_children.append(ParentNode(heading_node_number(block), text_to_children(block)))
+            super_children.append(ParentNode(heading_node_number(block), text_to_children(block[level + 1 :])))
         #PARAGRAPH
         if block_type == BlockType.PARAGRAPH:
-            block = block.replace("\n", " ")
-            if len(text_to_children(block)) ==  1:
-                super_children.append(LeafNode("p", block))
-                continue
-            super_children.append(ParentNode("p", text_to_children(block)))
+            lines = block.split("\n")
+            paragraph = " ".join(lines)
+            super_children.append(ParentNode("p", text_to_children(paragraph)))
         #QUOTE
         if block_type == BlockType.QUOTE:
-            block = block.replace("\n", " ")
+            block_lines = block.split("\n")
+            new_block_lines = []
+            for line in block_lines:
+                new_block_lines.append(line.lstrip("> "))
+            block = " ".join(new_block_lines)
             if len(text_to_children(block)) == 1:
                 super_children.append(LeafNode("blockquote", block))
                 continue
@@ -89,18 +96,18 @@ def markdown_to_html_node(text):
             line_list = []
             for line in block.split("\n"):
                 if len(text_to_children(line)) ==  1:
-                    line_list.append(LeafNode("li", line))
+                    line_list.append(LeafNode("li", line[2:]))
                     continue
-                line_list.append(ParentNode("li", text_to_children(line)))
+                line_list.append(ParentNode("li", text_to_children(line[2:])))
             super_children.append(ParentNode("ul", line_list))
         #OLIST
         if block_type == BlockType.OLIST:
             line_list = []
             for line in block.split("\n"):
                 if len(text_to_children(line)) ==  1:
-                    line_list.append(LeafNode("li", line))
+                    line_list.append(LeafNode("li", line[3:]))
                     continue
-                line_list.append(ParentNode("li", text_to_children(line)))
+                line_list.append(ParentNode("li", text_to_children(line[3:])))
             super_children.append(ParentNode("ol", line_list))
     return ParentNode("div", super_children)
 
@@ -130,6 +137,3 @@ def heading_node_number(block):
         return "h2"
     if block.startswith("#"):
         return "h1"
-
-
-
